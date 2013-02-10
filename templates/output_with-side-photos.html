@@ -1,0 +1,369 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Template &middot; Bootstrap</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le styles -->
+    <link href="../static/bootstrap/css/bootstrap.css" rel="stylesheet">
+    <style type="text/css">
+      body {
+        padding-top: 20px;
+        padding-bottom: 40px;
+        background-color: DarkGray;
+      }
+
+      /* Custom container */
+      .container-narrow {
+        margin: 0 auto;
+        max-width: 700px;
+      }
+      .container-narrow > hr {
+        margin: 30px 0;
+      }
+
+      /* Main marketing message and sign up button */
+      /* jpp changed this formatting to left align */
+      .jumbotron {
+        margin: 60px 0;
+        text-align: left;
+      }
+      .jumbotron h1 {
+        font-size: 72px;
+        line-height: 1;
+      }
+      .jumbotron .btn {
+        font-size: 21px;
+        padding: 14px 24px;
+        text-align: left;
+      }
+
+      .croppedImage{
+        width: 150px;
+        height: 150px;
+        margin-left: 40px;
+        margin-right: 40px;
+        margin-top: 40px;
+      }
+
+      .new_muted{color:Black}
+
+      /* Supporting marketing content */
+      .marketing {
+        margin: 60px 0;
+      }
+      .marketing p + h4 {
+        margin-top: 28px;
+      }
+    </style>
+
+    <script type="text/javascript">
+      var rejected_artists = new Array();
+      var upvote_artists = new Array();
+    </script>
+
+<!-- for the follow on twitter button -->
+    <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+
+<!-- jpp, added this function to bind buttons. Tell
+      Flask to drop a particular node when someone hits dislike -->
+    <script type="text/javascript">
+    function clicked(item) {
+
+      rejected_artists.push(document.getElementById("slot"+($(item).attr('id'))[6]).innerHTML)
+      var output_dict = {'id' : document.getElementById("slot"+($(item).attr('id'))[6]).innerHTML, 'rejected_artists': rejected_artists, 'upvoted_artists': upvote_artists }
+
+      $.ajax({ url:'/hiphopper/output', type:"POST", data: JSON.stringify(output_dict), 
+        contentType:"application/json; charset=utf-8", dataType:"json", 
+        success: function(data){ console.log(data)
+          document.getElementById('slot1').innerHTML=data[0]
+          document.getElementById('slot2').innerHTML=data[1]
+          document.getElementById('slot3').innerHTML=data[2]
+          document.getElementById('slot4').innerHTML=data[3]
+          document.getElementById('slot5').innerHTML=data[4]
+          document.getElementById('twit1').src="//platform.twitter.com/widgets/follow_button.html?screen_name="+data[5]
+          document.getElementById('twit2').src="//platform.twitter.com/widgets/follow_button.html?screen_name="+data[6]
+          document.getElementById('twit3').src="//platform.twitter.com/widgets/follow_button.html?screen_name="+data[7]
+          document.getElementById('twit4').src="//platform.twitter.com/widgets/follow_button.html?screen_name="+data[8]
+          document.getElementById('twit5').src="//platform.twitter.com/widgets/follow_button.html?screen_name="+data[9]
+
+        } });
+    };
+    </script>
+
+
+<!-- 
+    <script type="text/javascript">
+    function upvote_click(item) {
+
+      upvote_artists.push(document.getElementById("slot"+($(item).attr('id'))[8]).innerHTML)
+
+      var output_dict = {'id' : document.getElementById("slot"+($(item).attr('id'))[8]).innerHTML, 'rejected_artists': rejected_artists, 'upvoted_artists': upvote_artists }
+
+      $.ajax({ url:'/hiphopper/output', type:"POST", data: JSON.stringify(output_dict), 
+        contentType:"application/json; charset=utf-8", dataType:"json", 
+        success: function(data){ console.log(data)
+          document.getElementById('slot1').innerHTML=data[0]
+          document.getElementById('slot2').innerHTML=data[1]
+          document.getElementById('slot3').innerHTML=data[2]
+          document.getElementById('slot4').innerHTML=data[3]
+          document.getElementById('slot5').innerHTML=data[4]} });
+    };
+    </script> -->
+
+    <link href="../static/bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" media="screen" href="style.css"/>
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="../static/bootstrap/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../static/bootstrap/ico/apple-touch-icon-114-precomposed.png">
+      <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../static/bootstrap/ico/apple-touch-icon-72-precomposed.png">
+                    <link rel="apple-touch-icon-precomposed" href="../static/bootstrap/ico/apple-touch-icon-57-precomposed.png">
+                                   <link rel="shortcut icon" href="../static/bootstrap/ico/favicon.png">
+  </head>
+
+  <body>
+
+    <div class="container-narrow">
+
+      <div class="masthead">
+        <ul class="nav nav-pills pull-right">
+          <li><a href="{{ url_for('home') }}">Home</a></li>
+          <li class="active"><a href="{{ url_for('api') }}">The HipHopper App</a></li>
+          <li><a href="#">How It Works</a></li>
+          <li><a href="#">About Justin</a></li>
+          <li><a href="#">Holla Back</a></li>
+        </ul>
+        <h3 class="new_muted">HipHopper</h3>
+      </div>
+
+      <hr>
+
+      <div class="jumbotron">
+        <h2>True HipHop Heads Rock These Joints Too:</h2>
+      </div>
+
+<!-- Now deal with the menu of recommended artists -->
+<!-- jpp, flag: do this in a loop -->
+<!-- jinja for loop -->
+
+    <div id="containerEx5">
+      <div id="ex5">
+
+      <img class="croppedImage" src="https://api.twitter.com/1/users/profile_image?screen_name={{rec_sn[0]}}&size=original"
+        title="@{{rec_sn[0]}}">
+         
+        <div class='span3 offset1'> 
+          <p class="lead">{{recommendation[0]}}</p>
+        </span> 
+        
+      </img>
+
+      <img class="croppedImage" src="https://api.twitter.com/1/users/profile_image?screen_name={{rec_sn[0]}}&size=original"
+      title="@{{rec_sn[0]}}"> </img>
+
+      <img class="croppedImage" src="https://api.twitter.com/1/users/profile_image?screen_name={{rec_sn[0]}}&size=original"
+      title="@{{rec_sn[0]}}"> </img>
+
+      <!-- put in the text below each image -->
+<!--       <div class='row'>
+        <p class="lead"> 
+          <span id='slot1'> {{recommendation[0]}} </span> 
+        </p>
+        <div class='row'>
+          <iframe allowtransparency="true" frameborder="0" scrolling="no" id="twit1"
+          src="//platform.twitter.com/widgets/follow_button.html?screen_name={{rec_sn[0]}}"
+          style="width:300px; height:20px;"></iframe>
+        </div>
+
+      <img class="croppedImage" src="https://api.twitter.com/1/users/profile_image?screen_name={{rec_sn[0]}}&size=original"
+      title="@{{rec_sn[0]}}"> </img> -->
+
+    </div>
+    <br>
+    <br>
+    <div class="ex3">
+      <img class="croppedImage" src="https://api.twitter.com/1/users/profile_image?screen_name={{rec_sn[0]}}&size=original"
+        title="@{{rec_sn[0]}}"> </img>
+    </div>
+
+    <div class="row">
+      <!-- Set the picture for this artist from Twitter profile -->
+      <div class="span3">
+        <img class="croppedImage" src="https://api.twitter.com/1/users/profile_image?screen_name={{rec_sn[0]}}&size=original"
+        title="@{{rec_sn[0]}}"></img>
+      </div>
+      <div class="span2">
+        <button onclick = "clicked(this);" class="btn btn-small btn-inverse" id="button1" type="button"> less like this! </button>
+      </div>
+
+      <div class="row">
+        <!-- The artist name -->
+        <div class="span3">
+          <p class="lead"> 
+            <span id='slot1'> {{recommendation[0]}} </span> 
+          </p>
+        </div>
+
+        <!-- The twitter screen name -->
+        <div class="row">
+          
+          <iframe allowtransparency="true" frameborder="0" scrolling="no" id="twit1"
+          src="//platform.twitter.com/widgets/follow_button.html?screen_name={{rec_sn[0]}}"
+          style="width:300px; height:20px;">
+          </iframe>
+        </div>
+
+      </div>
+      
+    </div>
+
+
+    <div class="row">
+      <!-- Set the picture for this artist from Twitter profile -->
+      <div class="span3">
+        <img class="croppedImage" src="https://api.twitter.com/1/users/profile_image?screen_name={{rec_sn[1]}}&size=original"
+        title="@{{rec_sn[1]}}">
+      </div>
+      <!-- Now the artist's name -->
+      <div class="span3">
+        <p class="lead"> 
+            2. <span id='slot2'> {{recommendation[1]}} </span>
+        </p>
+      </div>
+      <div class="span2">
+        <button onclick = "clicked(this);" class="btn btn-small btn-inverse" type="button" id="button2"> less like this! </button>
+      </div>
+      <iframe allowtransparency="true" frameborder="0" scrolling="no" id="twit2"
+        src="//platform.twitter.com/widgets/follow_button.html?screen_name={{rec_sn[1]}}"
+        style="width:300px; height:20px;">
+      </iframe>
+<!--       <a href="https://twitter.com/{{rec_sn[1]}}" class="twitter-follow-button" data-show-count="false">Follow @{{rec_sn[1]}}</a>
+ -->
+    </div>
+
+    <div class="row">
+      <div class="span3">
+        <p class="lead"> 
+            3. <span id='slot3'> {{recommendation[2]}} </span>
+        </p>
+      </div>
+      <div class="span2">
+        <button onclick = "clicked(this);" class="btn btn-small btn-inverse" type="button" id="button3"> less like this! </button>
+      </div>
+      <iframe allowtransparency="true" frameborder="0" scrolling="no" id="twit3"
+        src="//platform.twitter.com/widgets/follow_button.html?screen_name={{rec_sn[2]}}"
+        style="width:300px; height:20px;">
+      </iframe>
+<!--       <a href="https://twitter.com/{{rec_sn[2]}}" class="twitter-follow-button" data-show-count="false">Follow @{{rec_sn[2]}}</a> -->
+    </div>
+
+    <div class="row">
+      <div class="span3">
+        <p class="lead"> 
+            4. <span id='slot4'> {{recommendation[3]}} </span>
+        </p>
+      </div>
+      <div class="span2">
+        <button onclick = "clicked(this);" class="btn btn-small btn-inverse" type="button" id="button4"> less like this! </button>
+      </div>
+      <iframe allowtransparency="true" frameborder="0" scrolling="no" id="twit4"
+        src="//platform.twitter.com/widgets/follow_button.html?screen_name={{rec_sn[3]}}"
+        style="width:300px; height:20px;">
+      </iframe>
+<!--       <a href="https://twitter.com/{{rec_sn[3]}}" class="twitter-follow-button" data-show-count="false">Follow @{{rec_sn[3]}}</a> -->
+    </div>
+
+    <div class="row">
+      <div class="span3">
+        <p class="lead"> 
+            5. <span id='slot5'> {{recommendation[4]}} </span>
+        </p>
+      </div>
+      <div class="span2">
+        <button onclick = "clicked(this);" class="btn btn-small btn-inverse" type="button" id="button5"> less like this! </button>
+      </div>
+      <iframe allowtransparency="true" frameborder="0" scrolling="no" id="twit5"
+        src="//platform.twitter.com/widgets/follow_button.html?screen_name={{rec_sn[4]}}"
+        style="width:300px; height:20px;">
+      </iframe>
+<!--       <a href="https://twitter.com/{{rec_sn[4]}}" class="twitter-follow-button" data-show-count="false">Follow @{{rec_sn[4]}}</a> -->
+    </div>
+
+    <div class="jumbotron">
+      <a class="btn btn-large btn-inverse" href="{{ url_for('api_revise') }}"> See how the recommendations generated</a>
+    </div>
+
+<!--      </div>
+      <div class="span3">
+        <button class="btn btn-small" type="button" href="#"> dislike </button> <br> <br>
+        <button class="btn btn-small" type="button" href="#"> dislike </button> <br> <br>
+        <button class="btn btn-small" type="button" href="#"> dislike </button> <br> <br>
+        <button class="btn btn-small" type="button" href="#"> dislike </button> <br> <br>
+        <button class="btn btn-small" type="button" href="#"> dislike </button> <br> <br>
+      </div>
+    </div> -->
+
+
+<!--        <a class="btn dropdown-toggle btn-large btn-primary" href="#" data-toggle="dropdown">
+          Artists Menu
+          <span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
+          <li><a tabindex="-1" href="#">J Dilla (Hip Hop)</a></li>
+        </ul> -->
+      
+
+      <hr>
+
+
+<!--        <div class="span6">
+          <h4>Subheading</h4>
+          <p>Donec id elit non mi porta gravida at eget metus. Maecenas faucibus mollis interdum.</p>
+
+          <h4>Subheading</h4>
+          <p>Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Cras mattis consectetur purus sit amet fermentum.</p>
+
+          <h4>Subheading</h4>
+          <p>Maecenas sed diam eget risus varius blandit sit amet non magna.</p>
+        </div> -->
+
+
+
+      <div class="footer">
+        <p>&copy; HipHopper 2013</p>
+      </div>
+
+    </div> <!-- /container -->
+
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+ 
+    <script type=text/javascript src="{{ url_for('static', filename='jquery.js') }}"></script>
+    <script src="../static/bootstrap/js/jquery.js"></script>
+    <script src="../static/bootstrap/js/bootstrap-transition.js"></script>
+    <script src="../static/bootstrap/js/bootstrap-alert.js"></script>
+    <script src="../static/bootstrap/js/bootstrap-modal.js"></script>
+    <script src="../static/bootstrap/js/bootstrap-dropdown.js"></script>
+    <script src="../static/bootstrap/js/bootstrap-scrollspy.js"></script>
+    <script src="../static/bootstrap/js/bootstrap-tab.js"></script>
+    <script src="../static/bootstrap/js/bootstrap-tooltip.js"></script>
+    <script src="../static/bootstrap/js/bootstrap-popover.js"></script>
+    <script src="../static/bootstrap/js/bootstrap-button.js"></script>
+    <script src="../static/bootstrap/js/bootstrap-collapse.js"></script>
+    <script src="../static/bootstrap/js/bootstrap-carousel.js"></script>
+    <script src="../static/bootstrap/js/bootstrap-typeahead.js"></script>
+    <!-- <script> var MyRecs = [ {{ ', '.join(recommendation) }} ]; </script> -->
+
+  </body>
+</html>

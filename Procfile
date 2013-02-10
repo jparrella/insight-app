@@ -1,0 +1,1 @@
+web: python jpp_insight_app.py
