@@ -9,7 +9,6 @@ import MySQLdb as mdb
 from pandas import DataFrame, Series
 from time import time, sleep
 import mysql_tools as mst
-from sklearn.cluster import MeanShift, estimate_bandwidth
 import general_tools as gent
 
 
