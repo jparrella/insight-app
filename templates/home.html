@@ -11,7 +11,7 @@
     <!-- Le styles -->
     <!-- <link href="../static/bootstrap/css/bootstrap.css" rel="stylesheet"> -->
     <!-- jpp, changed to url_for() to set dynamic web application -->
-    <link href="{{url_for('static/bootstrap/css/bootstrap.css')}}" rel="stylesheet">
+    <link href="{{url_for('static', filename='bootstrap.css')}}" rel="stylesheet">
 
     <style type="text/css">
       body {
@@ -156,8 +156,6 @@
     <!-- Placed at the end of the document so the pages load faster -->
     <!-- <script src="../static/bootstrap/js/jquery.js"></script> -->
     <script src="{{url_for('static/bootstrap/js', 'jquery.js')}}"></script>
-
-
     <script src="../static/bootstrap/js/bootstrap-transition.js"></script>
     <script src="../static/bootstrap/js/bootstrap-alert.js"></script>
     <script src="../static/bootstrap/js/bootstrap-modal.js"></script>
