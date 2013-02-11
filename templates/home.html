@@ -9,7 +9,10 @@
     <meta name="author" content="">
 
     <!-- Le styles -->
-    <link href="../static/bootstrap/css/bootstrap.css" rel="stylesheet">
+    <!-- <link href="../static/bootstrap/css/bootstrap.css" rel="stylesheet"> -->
+    <!-- jpp, changed to url_for() to set dynamic web application -->
+    <link href="{{url_for('static/bootstrap/css', filename='bootstrap.css')}}" rel="stylesheet">
+
     <style type="text/css">
       body {
         padding-top: 20px;
@@ -29,16 +32,6 @@
       .new_active{
         outline:0;
         color: Black;
-      }
-
-      .background_image {
-        background-image: url("../static/img/HipHop-Graffiti.jpg");
-        background-repeat: no-repeat;
-        position: relative;
-        width: 1000px;
-        height: 1000px;
-        z-index: 110;
-        border: solid 1px black;
       }
 
       .new_muted{color:Black}
@@ -82,13 +75,7 @@
 
   <body>
 
-<!--     <div>
-      <style type="text/css">{background-image:url('HipHop-Graffiti.jpg');}</style>
-    </div>
-
-    <div style= type="text/css">{background-image:url('HipHop-Graffiti.jpg');}</style>
-    </div> -->
-
+<!-- Start the body of the HTML -->
     <div class="container-narrow">
 
       <div class="masthead">
@@ -104,8 +91,8 @@
 
       <hr>
 
-      <!-- <div class='background_image'></div> -->
 
+      <!-- The main text of the page -->
       <div class="jumbotron">
         <h2>Find The Musicians You've Been Missing.</h2>
         <p class="lead">Powered By Twitter Data.</p>
@@ -167,7 +154,10 @@
     <!-- Le javascript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="../static/bootstrap/js/jquery.js"></script>
+    <!-- <script src="../static/bootstrap/js/jquery.js"></script> -->
+    <script src="{{url_for('static/bootstrap/js', 'jquery.js')}}"></script>
+
+    
     <script src="../static/bootstrap/js/bootstrap-transition.js"></script>
     <script src="../static/bootstrap/js/bootstrap-alert.js"></script>
     <script src="../static/bootstrap/js/bootstrap-modal.js"></script>
