@@ -154,9 +154,10 @@
     <!-- Le javascript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
+
+    <!-- jpp commented out the script lines below -->
     <!-- <script src="../static/bootstrap/js/jquery.js"></script> -->
-    <script src="{{url_for('static/bootstrap/js', filename='jquery.js')}}"></script>
-    <script src="../static/bootstrap/js/bootstrap-transition.js"></script>
+    <!-- <script src="../static/bootstrap/js/bootstrap-transition.js"></script>
     <script src="../static/bootstrap/js/bootstrap-alert.js"></script>
     <script src="../static/bootstrap/js/bootstrap-modal.js"></script>
     <script src="../static/bootstrap/js/bootstrap-dropdown.js"></script>
@@ -168,6 +169,21 @@
     <script src="../static/bootstrap/js/bootstrap-collapse.js"></script>
     <script src="../static/bootstrap/js/bootstrap-carousel.js"></script>
     <script src="../static/bootstrap/js/bootstrap-typeahead.js"></script>
+    -->
+    
+    <!-- url_for instead -->
+    <script src="{{url_for('static', filename='jquery.js')}}"></script>
+    <script src="{{url_for('static', filename='bootstrap-alert.js')}}"></script>
+    <script src="{{url_for('static', filename='bootstrap-modal.js')}}"></script>
+    <script src="{{url_for('static', filename='bootstrap-dropdown.js')}}"></script>
+    <script src="{{url_for('static', filename='bootstrap-scrollspy.js')}}"></script>
+    <script src="{{url_for('static', filename='bootstrap-tab.js')}}"></script>
+    <script src="{{url_for('static', filename='bootstrap-tooltip.js')}}"></script>
+    <script src="{{url_for('static', filename='bootstrap-popover.js')}}"></script>
+    <script src="{{url_for('static', filename='bootstrap-button.js')}}"></script>
+    <script src="{{url_for('static', filename='bootstrap-collapse.js')}}"></script>
+    <script src="{{url_for('static', filename='bootstrap-carousel.js')}}"></script>
+    <script src="{{url_for('static', filename='bootstrap-typeahead.js')}}"></script>
 
   </body>
 </html>
