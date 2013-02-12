@@ -10,7 +10,7 @@ from pandas import DataFrame, Series
 from time import time, sleep
 import mysql_tools as mst
 import general_tools as gent
-
+import os
 
 # ----------------------------------------
 # Important input variables
@@ -22,13 +22,14 @@ root_artist = 'jdilla'
 # this file
 loc = 'cluster_artists'
 
+mdb_pass = os.getenv('MDBPW')
 
 def get_artist_recs(drop_names=None, upvote_names=None):
 
 	# -------------------------------------------
 	# Open MySQL to access the artist vote data
 	# -------------------------------------------
-	db = mdb.connect('localhost', 'root','', db_name)
+	db = mdb.connect('localhost', 'root', mdb_pass, db_name)
 
 	with db:
 	    cur = db.cursor()
