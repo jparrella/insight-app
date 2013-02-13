@@ -55,7 +55,25 @@
       .marketing p + h4 {
         margin-top: 28px;
       }
+
     </style>
+
+    <!-- function for getting the artist's name from the
+     button click  -->
+    <script type="text/javascript">
+    function clicked(item) {
+
+      root_artist_name = document.getElementById("slot"+($(item).attr('id'))[6]).name
+
+      var output_dict = {'root_sn' : root_artist_name}
+
+      $.ajax({ url:'/hiphopper/output', type:"POST", data: JSON.stringify(output_dict), 
+        contentType:"application/json; charset=utf-8", dataType:"json", 
+        success: function(data){ console.log(data)          
+        } });
+    };
+
+    </script>
     <!-- <link href="../static/bootstrap/css/bootstrap-responsive.css" rel="stylesheet"> -->
     <link href="{{ url_for('static', filename='bootstrap-responsive.css') }}" rel="stylesheet">
 
@@ -119,7 +137,7 @@
       <div class="jumbotron">
         <h2>Pick An Artist</h2>
         <p class="lead"> and find new music from the fans who listen to...</p>
-        <a class="btn btn-large btn-inverse" href="{{ url_for('api_output') }}">J Dilla (hip-hop)</a>
+        <a onclick="clicked(this);" class="btn btn-large btn-inverse" href="{{ url_for('api_output') }}" id='slot1' name='jdilla'>J Dilla (hip-hop)</a>
 <!--         <br><br>
         <a class="btn btn-large btn-success" href="{{ url_for('api') }}">The Black Keys (rock)</a> -->
       </div>

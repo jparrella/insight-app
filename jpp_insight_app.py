@@ -3,6 +3,7 @@ from flask import Flask, url_for
 from flask import render_template
 from flask import jsonify
 from flask import request
+import sys
 
 # get path and import the clustering routine
 # import sys
@@ -27,6 +28,14 @@ def api():
 
 @app.route('/hiphopper/output', methods=['GET'])
 def api_output():
+
+	# get the artist's name from hiphopper.html
+	artist_sn = str(request.json['root_sn']).strip() 
+	print '++++++'
+	print artist_sn
+	print '++++++'
+	sys.exit()
+
 	#    return jsonify(recommendation) # to send to web-compatable...
 	rec = get_artist_recs()
 	rec_name = rec['name']
