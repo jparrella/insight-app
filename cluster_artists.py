@@ -17,14 +17,14 @@ import os
 # ----------------------------------------
 # for the MySQL database
 db_name = 'hiphopper'
-root_artist = 'jdilla'
+# root_artist = 'jdilla'
 
 # this file
 loc = 'cluster_artists'
 
 mdb_pass = os.getenv('MDBPW')
 
-def get_artist_recs(drop_names=None, upvote_names=None):
+def get_artist_recs(root_artist, drop_names=None, upvote_names=None):
 
 	# -------------------------------------------
 	# Open MySQL to access the artist vote data

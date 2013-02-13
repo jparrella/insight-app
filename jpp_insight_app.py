@@ -33,13 +33,9 @@ def api_output():
 	artist = request.args['artist']
 	# get the artist's name from hiphopper.html
 	print 'test output'
-	print '++++++'
-	print artist
-	print '++++++'
-	return
 
 	#    return jsonify(recommendation) # to send to web-compatable...
-	rec = get_artist_recs()
+	rec = get_artist_recs( artist.strip() )
 	rec_name = rec['name']
 	rec_sn   = rec['sn']
 	return render_template('output.html', recommendation=rec_name,
