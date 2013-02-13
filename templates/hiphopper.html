@@ -67,7 +67,7 @@
 
       var output_dict = {'root_sn' : root_artist_name}
 
-      $.ajax({ url:'/hiphopper/output', type:"POST", data: JSON.stringify(output_dict), 
+      $.ajax({ url:'/hiphopper/output1', type:"POST", data: JSON.stringify(output_dict), 
         contentType:"application/json; charset=utf-8", dataType:"json", 
         success: function(data){ console.log(data)          
         } });
@@ -140,7 +140,7 @@
 
         <!-- <a onclick="clicked(this);" class="btn btn-large btn-inverse" href="{{ url_for('api_output') }}" id='slot1' name='jdilla'>J Dilla (hip-hop)</a> -->
 
-        <a onclick="clicked(this);" class="btn btn-large btn-inverse"  id='slot1' name='jdilla'>J Dilla (hip-hop)</a>
+        <a onclick="clicked(this);" class="btn btn-large btn-inverse" href="{{ url_for('api_output') }}" id='slot1' name='jdilla'>J Dilla (hip-hop)</a>
 
 <!--         <br><br>
         <a class="btn btn-large btn-success" href="{{ url_for('api') }}">The Black Keys (rock)</a> -->
