@@ -30,6 +30,9 @@ def api():
 def api_output():
 
 	print 'test output 1'
+	print request.form
+	print request.args
+	print request.json
 	artist = request.form['artist']
 	# get the artist's name from hiphopper.html
 	print 'test output'
