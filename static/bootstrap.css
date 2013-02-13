@@ -658,6 +658,13 @@ p {
   line-height: 30px;
 }
 
+.lead-artists {
+  margin-bottom: 20px;
+  font-size: 21px;
+  font-weight: 200;
+  line-height: 30px;
+}
+
 small {
   font-size: 85%;
 }
