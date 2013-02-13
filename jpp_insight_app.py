@@ -31,8 +31,8 @@ def api_output():
 
 	# get the artist's name from hiphopper.html
 	print 'test output'
+	print request.data
 	print request.form
-	print request.json
 	artist_sn = str(request.form['root_sn']).strip() 
 	print '++++++'
 	print artist_sn
