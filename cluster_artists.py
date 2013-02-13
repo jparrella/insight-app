@@ -250,11 +250,18 @@ def get_artist_recs(root_artist, drop_names=None, upvote_names=None):
 				weight_matrix[ir, ic] += 1 * weight_adjust
 				weight_matrix[ic, ir] += 1 * weight_adjust
 
+
 	# ------------------------------------------------------------
-	# normalize the weights to the total number of
-	# followers that artist has (so sharing 25% of fan base, etc...)
+	# normalize the weights to the log number of
+	# followers artist has
 	# Also, begin filling our directed graph
 	# ------------------------------------------------------------
+	# transform the 0's to really small values
+	trans = np.where( weight_matrix, weight_matrix, 0.00001)
+	# now compute the log safely
+	log_wgt = np.log( trans )
+	log_wgt = np.where( log_wgt < 0, 0, log_wgt) # scale small back to zero
+
 	# for the root artist
 	# weight_matrix[0, :] = weight_matrix[0, :] / n_users
 	# for the rest of them
@@ -282,9 +289,10 @@ def get_artist_recs(root_artist, drop_names=None, upvote_names=None):
 			# 'hotttnesss' factors from EchoNest, or
 			# their familiarity score. Apply to the row
 			if ( wgt > 0.0001 ):
-				wgt = 1.0 / weight_matrix[i, j]
+				wgt = 1.0 / log_wgt[i, j] #weight_matrix[i, j]
 			else:
 				wgt = 0
+				continue # don't draw a graph if nothing's there
 
 			# the artist in the column space
 			artist_name_col = aname_list[j]
