@@ -288,8 +288,9 @@ def get_artist_recs(root_artist, drop_names=None, upvote_names=None):
 		# -------------------------
 		# Get the artist genre
 		# -------------------------
-		tt = frnd_data[ frnd_data['artist_name'] == artist_name_row ]['genre']
-		gg = tt[tt.keys()[0]]
+		# tt = frnd_data[ frnd_data['artist_name'] == artist_name_row ]['genre']
+		# gg = tt[tt.keys()[0]]
+
 		# if it's pop, downweight
 		if (gg.strip() == 'pop') or (gg.strip() == 'popular'):
 			pop_weight = 0.0001
@@ -307,9 +308,9 @@ def get_artist_recs(root_artist, drop_names=None, upvote_names=None):
 				wgt = 0
 				continue # don't draw a graph if nothing's there
 
-			if (pop_weight < 1.0):
-				wgt = 0
-				continue
+			# if (pop_weight < 1.0):
+			# 	wgt = 0
+			# 	continue
 
 			# the artist in the column space
 			artist_name_col = aname_list[j]
