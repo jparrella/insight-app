@@ -26,7 +26,7 @@ def api():
 #    return jsonify(recommendation) # to send to web-compatable...
     return render_template('hiphopper.html')
 
-@app.route('/hiphopper/output', methods=['GET'])
+@app.route('/hiphopper/output', methods=['POST', 'GET'])
 def api_output():
 
 	# get the artist's name from hiphopper.html
@@ -42,6 +42,7 @@ def api_output():
 	rec_sn   = rec['sn']
 	return render_template('output.html', recommendation=rec_name,
 		rec_sn = rec_sn)
+	
 
 @app.route('/hiphopper/output', methods=['POST', 'GET'])
 def refresh_list():
