@@ -291,11 +291,11 @@ def get_artist_recs(root_artist, drop_names=None, upvote_names=None):
 		# tt = frnd_data[ frnd_data['artist_name'] == artist_name_row ]['genre']
 		# gg = tt[tt.keys()[0]]
 
-		# if it's pop, downweight
-		if (gg.strip() == 'pop') or (gg.strip() == 'popular'):
-			pop_weight = 0.0001
-		else:
-			pop_weight = 1.0
+		# # if it's pop, downweight
+		# if (gg.strip() == 'pop') or (gg.strip() == 'popular'):
+		# 	pop_weight = 0.0001
+		# else:
+		# 	pop_weight = 1.0
 
 		for j in range(n_artists):
 
