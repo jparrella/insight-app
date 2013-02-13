@@ -80,28 +80,26 @@
 
   <body>
 
-    <div class="navbar navbar-inverse navbar-fixed-top">
+   <!-- Start the body of the HTML -->
+   <div class="navbar navbar-inverse navbar-fixed-top">
       <div class="navbar-inner">
         <div class="container-fluid">
-          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </a>
-          <a class="brand" href="{{ url_for('home') }}">HipHopper</a>
-          <div class="nav-collapse collapse">
+          <!-- add the website app name -->
+          <a class="brand">HipHopper</a>
+          <div class="nav">
             <ul class="nav">
-              <li><a href="{{ url_for('home') }}">Home</a></li>
+              <!-- Now add the navigation buttons -->
+              <li><a href="#">Home</a></li>
               <li class="active"><a href="{{ url_for('api') }}">The HipHopper App</a></li>
-              <li><a href="#">How It Works</a></li>
+              <li><a href="#">How it Works</a></li>
               <li><a href="#">About Justin</a></li>
               <li><a href="#">Holla Back</a></li>
             </ul>
-          </div><!--/.nav-collapse -->
+          </div>
         </div>
       </div>
     </div>
+
 
     <div class="container-narrow">
 
