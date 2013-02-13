@@ -67,7 +67,7 @@
 
       var output_dict = {'root_sn' : root_artist_name}
 
-      $.ajax({ url:'/hiphopper/output1', type:"POST", data: JSON.stringify(output_dict), 
+      $.ajax({ url:'/hiphopper/output', type:"POST", data: JSON.stringify(output_dict), 
         contentType:"application/json; charset=utf-8", dataType:"json", 
         success: function(data){ console.log(data)          
         } });
