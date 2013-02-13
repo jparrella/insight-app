@@ -34,7 +34,7 @@ def api_output():
 	print '++++++'
 	print artist_sn
 	print '++++++'
-	sys.exit()
+	return
 
 	#    return jsonify(recommendation) # to send to web-compatable...
 	rec = get_artist_recs()
