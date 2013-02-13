@@ -113,7 +113,7 @@
         height: 160px;
         margin-left: 0px;
         margin-right: 60px;
-        margin-top: 30px;
+        margin-top: 15px;
         margin-bottom: 5px;
         padding:2px;
         border: thin solid black;
@@ -246,24 +246,6 @@
 <!-- jpp, flag: do this in a loop -->
 <!-- jinja for loop -->
 
-<!--     <div id="containerEx5">
-      <div id="ex5">
-
-      <img class="croppedImage" src="https://api.twitter.com/1/users/profile_image?screen_name={{rec_sn[0]}}&size=original"
-        title="@{{rec_sn[0]}}"></img>
-
-      <img class="croppedImage" src="https://api.twitter.com/1/users/profile_image?screen_name={{rec_sn[0]}}&size=original"
-      title="@{{rec_sn[0]}}"> </img>
-
-      <div class='span3'> 
-          <p class="lead">{{recommendation[0]}}</p>
-      </span> 
-
-      <img class="croppedImage" src="https://api.twitter.com/1/users/profile_image?screen_name={{rec_sn[0]}}&size=original"
-      title="@{{rec_sn[0]}}"> </img>
-
-    </div>
- -->
 
       <!-- First row of artist recommendations -->
       <div class="table">
@@ -272,8 +254,7 @@
             <span class="boxwrap">
               <!-- Artist pictures -->
               <div class="artistwrap" id="box1">
-                <a href="https://soundcloud.com/search?q=@{{rec_sn[0]}}" target="_blank" id="scld1"> 
-                  <img class="croppedImage" src="https://api.twitter.com/1/users/profile_image?screen_name={{rec_sn[0]}}&size=original" title="@{{rec_sn[0]}}" id="img1"></img> </a>
+                  <img class="croppedImage" src="https://api.twitter.com/1/users/profile_image?screen_name={{rec_sn[0]}}&size=original" title="@{{rec_sn[0]}}" id="img1"></img>
                 <!-- now for the text -->
                   <p class="lead"> 
                     <span id='slot1'> {{recommendation[0]}} </span> 
