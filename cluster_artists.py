@@ -102,7 +102,7 @@ def get_artist_recs(root_artist, drop_names=None, upvote_names=None):
 		familiarity = float(tup[7])
 		hot = float(tup[6])
 
-		if (count_names[name_of_artist] < 30):
+		if (count_names[name_of_artist] < 5):
 			continue
 		
 		if not G.has_node(name_of_artist):
