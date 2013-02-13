@@ -63,9 +63,9 @@
     <script type="text/javascript">
     function clicked(item) {
 
-      var root_artist_name = document.getElementById("slot"+($(item).attr('id'))[4]).innerHTML
+      var root_artist_name = 'test'; //document.getElementById("slot"+($(item).attr('id'))[4]).innerHTML
 
-      var output_dict = {'root_sn' : root_artist_name}
+      var output_dict = {'root_sn' : root_artist_name};
 
       $.ajax({ url:'/hiphopper/output1', type:"POST", data: JSON.stringify(output_dict), 
         contentType:"application/json; charset=utf-8", dataType:"json", 
