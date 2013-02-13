@@ -145,8 +145,15 @@
     <script type="text/javascript">
     function clicked(item) {
 
+      console.log('before root artist')
+      var artist_name = {{root_artist}}
+      console.log('after root artist')
+      console.log(artist_name)
+
       rejected_artists.push(document.getElementById("slot"+($(item).attr('id'))[6]).innerHTML)
-      var output_dict = {'id' : document.getElementById("slot"+($(item).attr('id'))[6]).innerHTML, 'rejected_artists': rejected_artists, 'upvoted_artists': upvote_artists }
+
+      var output_dict = {'id' : document.getElementById("slot"+($(item).attr('id'))[6]).innerHTML, 'rejected_artists': rejected_artists, 'upvoted_artists': upvote_artists,
+      'root_artist': artist_name }
 
       $.ajax({ url:'/hiphopper/output', type:"POST", data: JSON.stringify(output_dict), 
         contentType:"application/json; charset=utf-8", dataType:"json", 

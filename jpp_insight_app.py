@@ -38,22 +38,29 @@ def api_output():
 	rec = get_artist_recs( artist.strip() )
 	rec_name = rec['name']
 	rec_sn   = rec['sn']
+
+	# now render the HTML for output
 	return render_template('output.html', recommendation=rec_name,
-		rec_sn = rec_sn)
+		rec_sn = rec_sn, root_artist = artist)
 
 
 @app.route('/hiphopper/output', methods=['POST', 'GET'])
 def refresh_list():
+	
 	# get the name from $.post JavaScript...
 	name = str(request.json['id']).strip()
 	out_dict = request.json
 	rejected_artists = request.json['rejected_artists']
 	upvoted_artists = request.json['upvoted_artists']
+	root_artist = request.json['root_artist']
+
 	print 'removing votes for ', rejected_artists
 	print 'upvoting votes for ', upvoted_artists
+	print 'root artist is ', root_artist
 
 	# pass to recommendation algorithm
 	rec = get_artist_recs(
+		root_artist,
 		drop_names = rejected_artists,
 		upvote_names = upvoted_artists
 		)
