@@ -29,6 +29,7 @@ def api():
 @app.route('/hiphopper/output_', methods=['GET'])
 def api_output():
 
+	print 'test output 1'
 	artist = request.form['artist']
 	# get the artist's name from hiphopper.html
 	print 'test output'
