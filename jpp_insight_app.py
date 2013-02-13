@@ -26,16 +26,14 @@ def api():
 #    return jsonify(recommendation) # to send to web-compatable...
     return render_template('hiphopper.html')
 
-@app.route('/hiphopper/output1', methods=['POST', 'GET'])
+@app.route('/hiphopper/output_', methods=['GET'])
 def api_output():
 
+	artist = request.form['artist']
 	# get the artist's name from hiphopper.html
 	print 'test output'
-	print request.data
-	print request.form
-	artist_sn = str(request.form['root_sn']).strip() 
 	print '++++++'
-	print artist_sn
+	print artist
 	print '++++++'
 	return
 
