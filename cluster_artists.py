@@ -129,6 +129,7 @@ def get_artist_recs(root_artist, drop_names=None, upvote_names=None):
 	# -------------------------------------------
 	DG = nx.DiGraph()
 
+
 	# -------------------------------------------------------
 	# Calculate the weightings for the directed graph as
 	# the number of shared followers between artists.
@@ -272,6 +273,7 @@ def get_artist_recs(root_artist, drop_names=None, upvote_names=None):
 		name_of_artist = aname_list[i]
 		DG.add_node(name_of_artist)
 
+	pop_weight = 1.0
 	# Now fill the Directed graph with nodes and weights
 	for i in range(n_artists):
 		artist_name_row = aname_list[i]
@@ -283,6 +285,17 @@ def get_artist_recs(root_artist, drop_names=None, upvote_names=None):
 		else:
 			familiarity = 1
 
+		# -------------------------
+		# Get the artist genre
+		# -------------------------
+		tt = frnd_data[ frnd_data['artist_name'] == artist_name_row ]['genre']
+		gg = tt[tt.keys()[0]]
+		# if it's pop, downweight
+		if (gg.strip() == 'pop') or (gg.strip() == 'popular'):
+			pop_weight = 0.0001
+		else:
+			pop_weight = 1.0
+
 		for j in range(n_artists):
 
 			# the weight - note, can also multiply in
@@ -293,6 +306,10 @@ def get_artist_recs(root_artist, drop_names=None, upvote_names=None):
 			else:
 				wgt = 0
 				continue # don't draw a graph if nothing's there
+
+			if (pop_weight < 1.0):
+				wgt = 0
+				continue
 
 			# the artist in the column space
 			artist_name_col = aname_list[j]
