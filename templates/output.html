@@ -173,6 +173,9 @@
           document.getElementById('img4').src="https://api.twitter.com/1/users/profile_image?screen_name="+data[7]+"&size=original"
           if (rejected_artists.length > 0) {
             document.getElementById('undo').innerHTML= "<button onclick='undo_click(this)'; class='btn btn-small btn-inverse'> Undo Last Down-Vote </button>"
+          } else
+          {
+            document.getElementById('undo').innerHTML= ""
           }
 
         } });
