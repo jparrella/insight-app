@@ -1,0 +1,255 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>HipHopper</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le styles -->
+    <!-- <link href="../static/bootstrap/css/bootstrap.css" rel="stylesheet"> -->
+
+    <!-- jpp, changed to url_for() to set dynamic web application -->
+    <link href="{{url_for('static', filename='bootstrap.css')}}" rel="stylesheet">
+
+    <style type="text/css">
+      body {
+        padding-top: 20px;
+        padding-bottom: 40px;
+        background-color: #F0F0F0;
+      }
+
+      /* Custom container */
+      .container-narrow {
+        margin: 0 auto;
+        max-width: 700px;
+      }
+      .container-narrow > hr {
+        margin: 30px 0;
+      }
+
+      /* Main marketing message and sign up button */
+      /* jpp changed this formatting to left align */
+      .jumbotron {
+        margin: 60px 0;
+        text-align: left;
+      }
+      .jumbotron h1 {
+        font-size: 72px;
+        line-height: 1;
+      }
+      .jumbotron .btn {
+        font-size: 21px;
+        padding: 14px 24px;
+        text-align: left;
+      }
+
+      .croppedImage{
+        width: 130px;
+        height: 130px;
+        /*border: thin solid black;*/
+      }
+
+
+      .new_muted{color:Black}
+
+      /* Supporting marketing content */
+      .marketing {
+        margin: 60px 0;
+      }
+      .marketing p + h4 {
+        margin-top: 28px;
+      }
+
+    </style>
+
+    <!-- function for getting the artist's name from the
+     button click  -->
+    <script type="text/javascript">
+    function clicked(item) {
+
+      console.log("boom")
+
+      var root_artist_name = 'test'; //document.getElementById("slot"+($(item).attr('id'))[4]).innerHTML
+
+      var output_dict = {'root_sn' : root_artist_name};
+
+      $.ajax({ url:'/hiphopper/output1', type:"POST", data: 
+        JSON.stringify(output_dict), 
+        contentType:"application/json; charset=utf-8", dataType:"json", 
+        success: function(data){ console.log(data)          
+        } });
+
+      return false
+    };
+
+    </script>
+    <!-- <link href="../static/bootstrap/css/bootstrap-responsive.css" rel="stylesheet"> -->
+    <link href="{{ url_for('static', filename='bootstrap-responsive.css') }}" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <!-- <link rel="apple-touch-icon-precomposed" sizes="144x144" href="../static/bootstrap/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../static/bootstrap/ico/apple-touch-icon-114-precomposed.png">
+      <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../static/bootstrap/ico/apple-touch-icon-72-precomposed.png">
+                    <link rel="apple-touch-icon-precomposed" href="../static/bootstrap/ico/apple-touch-icon-57-precomposed.png">
+                                   <link rel="shortcut icon" href="../static/bootstrap/ico/favicon.png"> -->
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="{{ url_for('static', filename='apple-touch-icon-144-precomposed.png')}}">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="{{url_for('static', filename='apple-touch-icon-114-precomposed.png')}}">
+      <link rel="apple-touch-icon-precomposed" sizes="72x72" href="{{ url_for('static', filename='apple-touch-icon-72-precomposed.png')}}">
+                    <link rel="apple-touch-icon-precomposed" href=" {{ url_for('static', filename = 'apple-touch-icon-57-precomposed.png') }}">
+                                   <link rel="shortcut icon" href=" {{ url_for('static', filename = 'favicon.png') }}">
+
+  </head>
+
+  <body>
+
+   <!-- Start the body of the HTML -->
+   <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+          <!-- add the website app name -->
+          <a class="brand">HipHopper</a>
+          <div class="nav">
+            <ul class="nav">
+              <!-- Now add the navigation buttons -->
+              <li><a href="{{ url_for('home') }}">Home</a></li>
+              <li class="active"><a href="{{ url_for('api') }}">The HipHopper App</a></li>
+              <li><a href="#">How it Works</a></li>
+              <li><a href="#">About Justin</a></li>
+              <li><a href="#">Holla Back</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="container-narrow">
+
+
+      <div class="jumbotron">
+        <h2>Justin Parrella</h2>
+
+            <dl class="dl-horizontal">
+              <!-- add my picture -->
+              <dt>
+                <img class="croppedImage" src="../static/img/j-dilla.jpg" title="J Dilla"></img>
+              </dt>
+              <dd>
+                <p> This is some text! </p>
+              </dd>
+            </dl>
+
+        <table 
+        <img class="croppedImage" src="../static/img/j-dilla.jpg" title="J Dilla"></img>
+        <!-- <a onclick="clicked(this);" class="btn btn-large btn-inverse" href="{{ url_for('api_output') }}" id='slot1' name='jdilla'>J Dilla (hip-hop)</a> -->
+        <p>
+          <img class="croppedImage" src="../static/img/j-dilla.jpg" title="J Dilla"></img>
+
+          <a class="btn btn-large btn-inverse" href="/hiphopper/output_?artist=jdilla" id='slot1'> J Dilla (hip-hop)</a>
+        </p>
+        <p>
+          <img class="croppedImage" src="https://api.twitter.com/1/users/profile_image?screen_name=coldplay&size=original"></img>
+
+          <a class="btn btn-large btn-inverse" href="/hiphopper/output_?artist=coldplay" id='slot2'> Coldplay (pop rock)</a>
+        </p>
+
+        <p>
+          <img class="croppedImage" src="https://api.twitter.com/1/users/profile_image?screen_name=The_National&size=original"></img>
+
+          <a class="btn btn-large btn-inverse" href="/hiphopper/output_?artist=thenational" id='slot3'> The National (alternative)</a>
+        </p>
+
+        <p>
+          <img class="croppedImage" src="https://api.twitter.com/1/users/profile_image?screen_name=jonathancoulton&size=original"></img>
+
+          <a class="btn btn-large btn-inverse" href="/hiphopper/output_?artist=jonathancoulton" id='slot4'> Jonathan Coulton (internet sensation)</a>
+        </p>
+
+
+<!--         <p>
+          <img class="croppedImage" src="https://api.twitter.com/1/users/profile_image?screen_name=ladygaga&size=original"></img>
+          <a class="btn btn-large btn-inverse" href="/hiphopper/output_?artist=ladygaga" id='slot3'> Lady Gaga (pop)</a>
+        </p>
+        <p>
+          <img class="croppedImage" src="https://api.twitter.com/1/users/profile_image?screen_name=justinbieber&size=original"></img>
+          <a class="btn btn-large btn-inverse" href="/hiphopper/output_?artist=justinbieber" id='slot4'> Justin Bieber (pop)</a>
+        </p> -->
+
+<!--         <br><br>
+        <a class="btn btn-large btn-success" href="{{ url_for('api') }}">The Black Keys (rock)</a> -->
+      </div>
+
+
+<!--        <a class="btn dropdown-toggle btn-large btn-primary" href="#" data-toggle="dropdown">
+          Artists Menu
+          <span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
+          <li><a tabindex="-1" href="#">J Dilla (Hip Hop)</a></li>
+        </ul> -->
+      
+
+      <hr>
+
+
+<!--        <div class="span6">
+          <h4>Subheading</h4>
+          <p>Donec id elit non mi porta gravida at eget metus. Maecenas faucibus mollis interdum.</p>
+
+          <h4>Subheading</h4>
+          <p>Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Cras mattis consectetur purus sit amet fermentum.</p>
+
+          <h4>Subheading</h4>
+          <p>Maecenas sed diam eget risus varius blandit sit amet non magna.</p>
+        </div> -->
+
+
+
+      <div class="footer">
+        <p>&copy; HipHopper 2013</p>
+      </div>
+
+    </div> <!-- /container -->
+
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+
+    <!-- jpp commented out the script lines below -->
+    <!-- <script src="../static/bootstrap/js/jquery.js"></script>
+    <script src="../static/bootstrap/js/bootstrap-transition.js"></script>
+    <script src="../static/bootstrap/js/bootstrap-alert.js"></script>
+    <script src="../static/bootstrap/js/bootstrap-modal.js"></script>
+    <script src="../static/bootstrap/js/bootstrap-dropdown.js"></script>
+    <script src="../static/bootstrap/js/bootstrap-scrollspy.js"></script>
+    <script src="../static/bootstrap/js/bootstrap-tab.js"></script>
+    <script src="../static/bootstrap/js/bootstrap-tooltip.js"></script>
+    <script src="../static/bootstrap/js/bootstrap-popover.js"></script>
+    <script src="../static/bootstrap/js/bootstrap-button.js"></script>
+    <script src="../static/bootstrap/js/bootstrap-collapse.js"></script>
+    <script src="../static/bootstrap/js/bootstrap-carousel.js"></script>
+    <script src="../static/bootstrap/js/bootstrap-typeahead.js"></script> -->
+    <!-- jpp, url_for instead -->
+    <script src="{{url_for('static', filename='jquery.js')}}"></script>
+    <script src="{{url_for('static', filename='bootstrap-alert.js')}}"></script>
+    <script src="{{url_for('static', filename='bootstrap-modal.js')}}"></script>
+    <script src="{{url_for('static', filename='bootstrap-dropdown.js')}}"></script>
+    <script src="{{url_for('static', filename='bootstrap-scrollspy.js')}}"></script>
+    <script src="{{url_for('static', filename='bootstrap-tab.js')}}"></script>
+    <script src="{{url_for('static', filename='bootstrap-tooltip.js')}}"></script>
+    <script src="{{url_for('static', filename='bootstrap-popover.js')}}"></script>
+    <script src="{{url_for('static', filename='bootstrap-button.js')}}"></script>
+    <script src="{{url_for('static', filename='bootstrap-collapse.js')}}"></script>
+    <script src="{{url_for('static', filename='bootstrap-carousel.js')}}"></script>
+    <script src="{{url_for('static', filename='bootstrap-typeahead.js')}}"></script>
+
+  </body>
+</html>
