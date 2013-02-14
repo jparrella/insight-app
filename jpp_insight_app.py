@@ -48,7 +48,7 @@ def api_output():
 def refresh_list():
 	
 	# get the name from $.post JavaScript...
-	name = str(request.json['id']).strip()
+	# name = str(request.json['id']).strip()
 	out_dict = request.json
 	rejected_artists = request.json['rejected_artists']
 	upvoted_artists = request.json['upvoted_artists']
