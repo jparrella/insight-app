@@ -160,7 +160,7 @@ def get_artist_recs(root_artist, drop_names=None, upvote_names=None):
 		down_weight = 1.0
 		down_voted_artists = ' - No artist here! - '
 	else:
-		down_weight   = 1.0/10.0
+		down_weight   = 1.0/100.0
 		down_voted_artists = drop_names
 		# print 'in the downweighting section', down_voted_artist
 
