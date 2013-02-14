@@ -52,6 +52,9 @@ def get_artist_recs(root_artist, drop_names=None, upvote_names=None):
 	# Generate the affinity array for artists clustering
 	# ---------------------------------------------------
 
+	# filter out the pop artists
+	frnd_data = frnd_data[ frnd_data['genre'] != 'pop' ]
+
 	# Find the number of unique artists
 	anames = frnd_data['artist_name']
 	unique_anames = np.unique( anames )
@@ -102,7 +105,14 @@ def get_artist_recs(root_artist, drop_names=None, upvote_names=None):
 		familiarity = float(tup[7])
 		hot = float(tup[6])
 
-		if (count_names[name_of_artist] < 5):
+		# jpp, flag
+		# removing pop artists
+		try:
+			count = count_names[name_of_artist]
+		except:
+			continue # filtered out that artist
+
+		if ( count < 5):
 			continue
 		
 		if not G.has_node(name_of_artist):
@@ -277,13 +287,6 @@ def get_artist_recs(root_artist, drop_names=None, upvote_names=None):
 	# Now fill the Directed graph with nodes and weights
 	for i in range(n_artists):
 		artist_name_row = aname_list[i]
-
-		# jpp, flag - not sure if I'll use this or not
-		if (i > 0):
-			tup = list_data[i]
-			familiarity = float(tup[7])
-		else:
-			familiarity = 1
 
 		# -------------------------
 		# Get the artist genre
