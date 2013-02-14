@@ -366,11 +366,12 @@ def get_artist_recs(root_artist, drop_names=None, upvote_names=None):
 		# break if we have 4 artists
 		if j > 3: break
 
-		# skip the root artist
-		if (name == root_artist): continue
 		# unpack the tuple
 		name, dist = art
 
+		# skip the root artist
+		if (name == root_artist): continue
+		
 		# A control statement to remove artists
 		# that have been down-weighted from the
 		# output.
