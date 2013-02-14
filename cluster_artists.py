@@ -176,6 +176,7 @@ def get_artist_recs(root_artist, drop_names=None, upvote_names=None):
 	if ( drop_names == None ):
 		down_weight = 1.0
 		down_voted_artists = ' - No artist here! - '
+		weight_adjust_down = 1.0
 	else:
 		down_weight   = 1.0/100.0
 		down_voted_artists = drop_names
@@ -184,6 +185,7 @@ def get_artist_recs(root_artist, drop_names=None, upvote_names=None):
 	if ( upvote_names == None ):
 		up_weight = 1.0
 		up_voted_artists = ' - No artist here! - '
+		weight_adjust_up = 1.0
 	else:
 		up_weight   = 100.0
 		up_voted_artists = drop_names
