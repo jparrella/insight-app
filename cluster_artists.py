@@ -77,6 +77,9 @@ def get_artist_recs(root_artist, drop_names=None, upvote_names=None):
 	# echonest
 	frnd_data = frnd_data[ frnd_data['artist_name'] != 'Wired' ]
 	frnd_data = frnd_data[ frnd_data['artist_name'] != 'Samuel L. Jackson' ]
+	frnd_data = frnd_data[ frnd_data['artist_name'] != 'Taylor Swift' ]
+	frnd_data = frnd_data[ frnd_data['artist_name'] != 'Ozzy Osbourne' ]
+	
 
 	# Find the number of unique artists
 	anames = frnd_data['artist_name']
