@@ -213,6 +213,8 @@
           document.getElementById('img2').src="https://api.twitter.com/1/users/profile_image?screen_name="+data[5]+"&size=original"
           document.getElementById('img3').src="https://api.twitter.com/1/users/profile_image?screen_name="+data[6]+"&size=original"
           document.getElementById('img4').src="https://api.twitter.com/1/users/profile_image?screen_name="+data[7]+"&size=original"
+
+          document.getElementById('img1').href="http://www.youtube.com/results?search_query="+data[0].replace(' ', '+')
           
           document.getElementById('undo').innerHTML= "<button onclick='undo_click(this)'; class='btn btn-small btn-inverse'> Undo Last Down-Vote </button>"
 
@@ -250,13 +252,6 @@
     <!--[if lt IE 9]>
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-
-    <!-- Fav and touch icons -->
-    <!-- <link rel="apple-touch-icon-precomposed" sizes="144x144" href="../static/bootstrap/ico/apple-touch-icon-144-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../static/bootstrap/ico/apple-touch-icon-114-precomposed.png">
-      <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../static/bootstrap/ico/apple-touch-icon-72-precomposed.png">
-                    <link rel="apple-touch-icon-precomposed" href="../static/bootstrap/ico/apple-touch-icon-57-precomposed.png">
-                                   <link rel="shortcut icon" href="../static/bootstrap/ico/favicon.png"> -->
 
     <link rel="apple-touch-icon-precomposed" sizes="144x144" href="{{ url_for('static', filename='apple-touch-icon-144-precomposed.png')}}">
     <link rel="apple-touch-icon-precomposed" sizes="114x114" href="{{url_for('static', filename='apple-touch-icon-114-precomposed.png')}}">
@@ -314,7 +309,8 @@
                with a string split or replace white-space
                -->
               <div class="artistwrap" id="box1">
-                  <img class="croppedImage" src="https://api.twitter.com/1/users/profile_image?screen_name={{rec_sn[0]}}&size=original" title="@{{rec_sn[0]}}" id="img1"></img>
+                  <img class="croppedImage" src="https://api.twitter.com/1/users/profile_image?screen_name={{rec_sn[0]}}&size=original" title="@{{rec_sn[0]}}" id="img1"
+                  href="http://www.youtube.com/results?search_query="+"{{rec_sn[0]}}".replace(' ', '+')></img>
                 <!-- now for the text -->
                   <p class="lead-artists"> 
                     <span id='slot1'> {{recommendation[0]}} </span> 
