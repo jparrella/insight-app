@@ -52,8 +52,12 @@ def get_artist_recs(root_artist, drop_names=None, upvote_names=None):
 	# Generate the affinity array for artists clustering
 	# ---------------------------------------------------
 
-	# filter out the pop artists
+	# filter out the pop artists and other buggy ones
 	frnd_data = frnd_data[ frnd_data['genre'] != 'pop' ]
+	frnd_data = frnd_data[ frnd_data['genre'] != 'latin' ]
+	frnd_data = frnd_data[ frnd_data['genre'] != 'cabaret' ]
+	frnd_data = frnd_data[ frnd_data['genre'] != 'symphony' ]
+	frnd_data = frnd_data[ frnd_data['genre'] != 'soundtrack' ]
 
 	# Find the number of unique artists
 	anames = frnd_data['artist_name']
