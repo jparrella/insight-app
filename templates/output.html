@@ -215,6 +215,9 @@
           document.getElementById('img4').src="https://api.twitter.com/1/users/profile_image?screen_name="+data[7]+"&size=original"
 
           document.getElementById('img1_link').href="http://www.youtube.com/results?search_query="+data[0].replace(' ', '+')
+          document.getElementById('img2_link').href="http://www.youtube.com/results?search_query="+data[1].replace(' ', '+')
+          document.getElementById('img3_link').href="http://www.youtube.com/results?search_query="+data[2].replace(' ', '+')
+          document.getElementById('img4_link').href="http://www.youtube.com/results?search_query="+data[3].replace(' ', '+')
           
           document.getElementById('undo').innerHTML= "<button onclick='undo_click(this)'; class='btn btn-small btn-inverse'> Undo Last Down-Vote </button>"
 
@@ -309,7 +312,8 @@
                with a string split or replace white-space
                -->
               <div class="artistwrap" id="box1">
-                <a id = 'img1_link' href="http://www.youtube.com/results?search_query={{recommendation[0]}}".replace(' ', '+') >
+                <a id = 'img1_link' href="http://www.youtube.com/results?search_query={{recommendation[0]}}"
+                target='_blank'>
                   <img class="croppedImage" src="https://api.twitter.com/1/users/profile_image?screen_name={{rec_sn[0]}}&size=original" title="@{{rec_sn[0]}}" id="img1"></img>
                 </a>
                 <!-- now for the text -->
@@ -328,8 +332,11 @@
             <span class="boxwrap">
               <!-- Artist pictures -->
               <div class="artistwrap" id="box2">
-                <img class="croppedImage" src="https://api.twitter.com/1/users/profile_image?screen_name={{rec_sn[1]}}&size=original"
-                title="@{{rec_sn[1]}}" id="img2"> </img>
+                <a id = 'img2_link' href="http://www.youtube.com/results?search_query={{recommendation[1]}}"
+                target='_blank'>
+                  <img class="croppedImage" src="https://api.twitter.com/1/users/profile_image?screen_name={{rec_sn[1]}}&size=original"
+                  title="@{{rec_sn[1]}}" id="img2"> </img>
+                </a>
                 <!-- now for the text -->
                   <p class="lead-artists"> 
                     <span id='slot2'> {{recommendation[1]}} </span> 
@@ -346,8 +353,11 @@
             <span class="boxwrap">
               <!-- Artist pictures -->
               <div class="artistwrap" id="box3">
-                <img class="croppedImage2" src="https://api.twitter.com/1/users/profile_image?screen_name={{rec_sn[2]}}&size=original"
-                title="@{{rec_sn[2]}}" id="img3"></img>
+                <a id = 'img3_link' href="http://www.youtube.com/results?search_query={{recommendation[2]}}"
+                target='_blank'>
+                  <img class="croppedImage2" src="https://api.twitter.com/1/users/profile_image?screen_name={{rec_sn[2]}}&size=original"
+                  title="@{{rec_sn[2]}}" id="img3"></img>
+                </a>
                 <!-- now for the text -->
                 <p class="lead-artists"> 
                   <span id='slot3'> {{recommendation[2]}} </span> 
@@ -364,8 +374,11 @@
             <span class="boxwrap">
               <!-- Artist pictures -->
               <div class="artistwrap" id="box4">
-                <img class="croppedImage2" src="https://api.twitter.com/1/users/profile_image?screen_name={{rec_sn[3]}}&size=original"
-                title="@{{rec_sn[3]}}" id="img4"> </img>
+                <a id = 'img4_link' href="http://www.youtube.com/results?search_query={{recommendation[3]}}"
+                target='_blank'>
+                  <img class="croppedImage2" src="https://api.twitter.com/1/users/profile_image?screen_name={{rec_sn[3]}}&size=original"
+                  title="@{{rec_sn[3]}}" id="img4"> </img>
+                </a>
                 <!-- now for the text -->
                 <p class="lead-artists"> 
                   <span id='slot4'> {{recommendation[3]}} </span> 
