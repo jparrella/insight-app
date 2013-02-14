@@ -26,6 +26,15 @@ mdb_pass = os.getenv('MDBPW')
 
 def get_artist_recs(root_artist, drop_names=None, upvote_names=None):
 
+
+	# Handle the case when drop_names or
+	# upvote_names are empty arrays
+	if drop_names != None:
+		if len(drop_names) == 0:
+			drop_names = None
+		if len(upvote_names) == 0:
+			upvote_names = None
+
 	# -------------------------------------------
 	# Open MySQL to access the artist vote data
 	# -------------------------------------------
