@@ -60,6 +60,7 @@ def get_artist_recs(root_artist, drop_names=None, upvote_names=None):
 	frnd_data = frnd_data[ frnd_data['genre'] != 'soundtrack' ]
 	frnd_data = frnd_data[ frnd_data['genre'] != 'r&b' ]
 	frnd_data = frnd_data[ frnd_data['genre'] != 'latin pop' ]
+	frnd_data = frnd_data[ frnd_data['genre'] != 'hardcore' ]
 
 	# Find the number of unique artists
 	anames = frnd_data['artist_name']
@@ -359,11 +360,32 @@ def get_artist_recs(root_artist, drop_names=None, upvote_names=None):
 	j = 0
 	rec_list = []
 	twitter_handles = []
+	yn_next = False
 	for art in sorted_dist:
+
+		# break if we have 4 artists
 		if j > 3: break
+
+		# skip the root artist
+		if (name == root_artist): continue
 		# unpack the tuple
 		name, dist = art
-		# now
+
+		# A control statement to remove artists
+		# that have been down-weighted from the
+		# output.
+		if drop_names != None:
+			for dn in drop_names:
+				if dn.strip() == name:
+					yn_next = True
+					break
+
+		if yn_next:
+			yn_next = False
+			continue
+
+		# Get the proper twitter screen name
+		# jpp, flag refactor
 		for tup in list_data:
 			sn = tup[4]
 			n  = tup[3]
@@ -371,10 +393,20 @@ def get_artist_recs(root_artist, drop_names=None, upvote_names=None):
 				twitter_handles.append(sn)
 				break
 
-		if (name == root_artist): continue
 		j += 1
 		print name
+
 		rec_list.append( name )
+
+	# if no artists left to fill, then pack with
+	# the following:
+	# name = "Sorry, no artists left!"
+	# sn = twitter
+	n_recs_out = len(rec_list)
+	if n_recs_out < 4:
+		for i in range(4 - n_recs_out):
+			rec_list.append("Sorry, no artists left!")
+			twitter_handles.append("twitter")
 
 	# jpp, flag - make more elegant - refactor
 	# convert to dictionary to be jsonify-able
