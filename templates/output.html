@@ -190,7 +190,7 @@
           document.getElementById('img2_link').href="http://www.youtube.com/results?search_query="+data[1].replace(' ', '+')
           document.getElementById('img3_link').href="http://www.youtube.com/results?search_query="+data[2].replace(' ', '+')
           document.getElementById('img4_link').href="http://www.youtube.com/results?search_query="+data[3].replace(' ', '+')
-          
+
           if (rejected_artists.length > 0) {
             document.getElementById('undo').innerHTML= "<button onclick='undo_click(this)'; class='btn btn-small btn-info'> Undo Last Down-Vote </button>"
           } else
@@ -295,7 +295,7 @@
           <div class="nav">
             <ul class="nav">
               <!-- Now add the navigation buttons -->
-              <li><a href="#">Home</a></li>
+              <li><a href="./home">Home</a></li>
               <li class="active" ><a href="{{ url_for('api') }}">The HipHopper App</a></li>
               <li><a href="#">How it Works</a></li>
               <li><a href="#">About Justin</a></li>

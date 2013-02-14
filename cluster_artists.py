@@ -71,6 +71,12 @@ def get_artist_recs(root_artist, drop_names=None, upvote_names=None):
 	frnd_data = frnd_data[ frnd_data['genre'] != 'latin pop' ]
 	frnd_data = frnd_data[ frnd_data['genre'] != 'hardcore' ]
 	frnd_data = frnd_data[ frnd_data['genre'] != 'pop rock' ]
+	# jpp, flag
+	# hardwired some names that really aren't musicians, but
+	# for some reason are listed as "rock" or "blues" in 
+	# echonest
+	frnd_data = frnd_data[ frnd_data['artist_name'] != 'Wired' ]
+	frnd_data = frnd_data[ frnd_data['artist_name'] != 'Samuel L. Jackson' ]
 
 	# Find the number of unique artists
 	anames = frnd_data['artist_name']
