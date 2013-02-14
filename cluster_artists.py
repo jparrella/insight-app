@@ -59,6 +59,7 @@ def get_artist_recs(root_artist, drop_names=None, upvote_names=None):
 	frnd_data = frnd_data[ frnd_data['genre'] != 'symphony' ]
 	frnd_data = frnd_data[ frnd_data['genre'] != 'soundtrack' ]
 	frnd_data = frnd_data[ frnd_data['genre'] != 'r&b' ]
+	frnd_data = frnd_data[ frnd_data['genre'] != 'latin pop' ]
 
 	# Find the number of unique artists
 	anames = frnd_data['artist_name']
