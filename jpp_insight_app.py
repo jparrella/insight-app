@@ -20,6 +20,13 @@ def home():
 #    return render_template('bootstrap_eg2.html')
     return render_template('home.html')
 
+@app.route('/about_me')
+def about_me():
+    # render_template() looks for the following html file in the
+    # local ./templates folder.
+    return render_template('about_me.html')
+
+
 @app.route('/hiphopper')
 def api():
 #    recommendation = {'band': 'radiohead', 'album': 'Ok comp'}
