@@ -68,8 +68,9 @@ def refresh_list():
 	# make sure we don't have any unicode characters
 	# that will disrupt our string comparisons in 
 	# get_artist_recs()
-	for i in range( len(rejected_artists) ):
-		rejected_artists[i] = rejected_artists[i].replace('&amp;', '&')
+	if type(rejected_artists) is list:
+		for i in range( len(rejected_artists) ):
+			rejected_artists[i] = rejected_artists[i].replace('&amp;', '&')
 
 	# pass to recommendation algorithm
 	rec = get_artist_recs(

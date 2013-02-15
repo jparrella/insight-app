@@ -32,10 +32,13 @@ def get_artist_recs(root_artist, drop_names=None, upvote_names=None):
 	if drop_names != None:
 		if len(drop_names) == 0:
 			drop_names = None
+		else:
+			drop_names = np.unique(drop_names)
 		if len(upvote_names) == 0:
 			upvote_names = None
-	else:
-		drop_names = np.unique(drop_names)
+		else:
+			upvote_names = np.unique(upvote_names)
+
 
 	# -------------------------------------------
 	# Open MySQL to access the artist vote data
