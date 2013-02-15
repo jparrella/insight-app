@@ -436,5 +436,7 @@ def get_artist_recs(root_artist, drop_names=None, upvote_names=None):
 	# convert to dictionary to be jsonify-able
 	rec_dict = {'name': rec_list, 'sn': twitter_handles}
 
+	print 'the rejected artists are ', drop_names
+
 	return rec_dict #rec_list
 
