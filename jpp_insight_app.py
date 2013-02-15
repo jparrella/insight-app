@@ -65,6 +65,12 @@ def refresh_list():
 	print 'upvoting votes for ', upvoted_artists
 	print 'root artist is ', root_artist
 
+	# make sure we don't have any unicode characters
+	# that will disrupt our string comparisons in 
+	# get_artist_recs()
+	for i in range( len(rejected_artists):
+		rejected_artists[i].replace('&amp;', '&')
+
 	# pass to recommendation algorithm
 	rec = get_artist_recs(
 		root_artist,
