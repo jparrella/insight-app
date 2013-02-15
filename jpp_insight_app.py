@@ -22,10 +22,11 @@ def home():
 
 @app.route('/about_me')
 def about_me():
-    # render_template() looks for the following html file in the
-    # local ./templates folder.
     return render_template('about_me.html')
 
+@app.route('/slides')
+def slides():
+    return render_template('slides.html')
 
 @app.route('/hiphopper')
 def api():
