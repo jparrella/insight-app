@@ -1,47 +1,62 @@
 '''
-Created on Feb 1, 2013
+file: mysql_tools.py
 
-@author: jparrella
+----------
+ Notes:
+----------
+This file contains functions to create tables in the
+HipHopper MySQL database. Tables correspond to twitter
+data scraped for each of the root artists considered
+in the web application.
+
+Created on Feb 1, 2013
+@author: justin.parrella@gmail.com
 '''
 
-
 # Local variable for the functions below
-proj_name  = 'hiphopper' 
+proj_name = 'hiphopper'
 art_tbl_name = 'artists'
 frnds_tbl_name = 'friends'
 
-# First execute the unix command to export DYLIB
-#import os
-#os.system("DYLD_LIBRARY_PATH=\"${DYLD_LIBRARY_PATH}:/user/local/mysql/lib/\"")
+# imported modules
 import MySQLdb as mdb
 import general_tools as gt
 
+
 def create_db(p_name=proj_name):
     '''
-    Use to create a new MySQL Schema
+    If the hiphopper database has not yet been created, we can
+    do so with this function.
     '''
-    db = mdb.connect('localhost', 'root','',
-        charset='utf8', use_unicode=True)
+    db = mdb.connect('localhost', 'root', '',
+                     charset='utf8', use_unicode=True)
     cursor = db.cursor()
     # Create the database
-    # Could tag "IF NOT EXISTS", but will let it raise an
+    # TODO: tag with "IF NOT EXISTS", but will let it raise an
     # exception for now. I don't want to add values to
     # populated tables inadvertantly.
     cursor.execute("CREATE database {0}".format(p_name))
 
+    # commit the changes to MySQL
     db.commit()
+
 
 def create_user_table(db_select, root_artist):
     '''
-    Make a new table in the hiphopper database 
+    If a "user" table for the given root_artist does not
+    yet exist in the hiphopper database, then create it.
     '''
-    db = mdb.connect('localhost','root','')
+    # open connection to the local MySQL database
+    db = mdb.connect('localhost', 'root', '')
     cursor = db.cursor()
+    # use the schema corresponding to root_artist
     cursor.execute('USE {0}'.format(db_select.strip()))
-    
-    # Table name
+
+    # The users table name, specific to the root_artist
     tbl_name = 'users'+"_"+root_artist.strip()
-    
+
+    # TODO: tag with "IF NOT EXISTS", but will let it raise an
+    # exception for now.
     cursor.execute("CREATE TABLE {0} (\
         pkid int NOT NULL auto_increment, \
         user_tw_id int(20) NOT NULL, \
@@ -50,18 +65,31 @@ def create_user_table(db_select, root_artist):
         user_followees_count int(20) NULL, \
         PRIMARY KEY (pkid)) ENGINE=InnoDB;".format(tbl_name))
 
-def populate_user_table(root_followers, in_db, root_artist):
 
-    db = mdb.connect('localhost','root','',
-        charset='utf8', use_unicode=True)
+def populate_user_table(root_followers, in_db, root_artist):
+    '''
+    Populate the "user" table for the given root_artist
+
+    What we're storing:
+    ```````````````````
+    - Information for each twitter follower of the root_artist.
+    - in next step (not in this table), we'll store information
+      on what twitter users each of the 1st degree users follow.
+    '''
+    # Open connection to the local MySQL database
+    db = mdb.connect('localhost', 'root', '',
+                     charset='utf8', use_unicode=True)
 
     cursor = db.cursor()
+    # use the specified database - HipHopper.
     cursor.execute('USE {0}'.format(in_db))
 
     # Table name
     tbl_name = 'users'+"_"+root_artist.strip()
 
-    # If it's not a list, then convert it to one
+    # If the twitter user information in root_followers,
+    # is not contained in a list, then convert it to one
+    # to stream-line the processing.
     if not (type(root_followers) is list):
         if root_followers:
             root_followers = [root_followers]
@@ -70,110 +98,75 @@ def populate_user_table(root_followers, in_db, root_artist):
             raise Exception('populate_user_table: input value, \
                 root_followers, is empty')
 
-    # loop over the users to store them
+    # loop over the twitter users stored in root_followers
+    # and store them in our MySQL table.
     for user_obj in root_followers:
-
-        uid     = user_obj.id
-        ufc     = user_obj.friends_count
+        # twitter user ids and the no. of friends (ppl they follow)
+        # will be stored in the database. Store them in local vars.
+        uid = user_obj.id
+        ufc = user_obj.friends_count
 
         # just in case there's nothing there
-        if (uid == None) or (user_obj.screen_name == None):
+        if (uid is None) or (user_obj.screen_name is None):
             continue
-        # print 'in user mysql call: ', user_obj.id
 
-        # make sure to escape the strings in case of quotations, etc.
+        # Make sure to escape the strings in
+        # case of quotations, bad characters, etc.
+        # Use "try" command to avoid failures
         try:
             tw_name = mdb.escape_string(user_obj.name)
         except:
             # occasionally you get characters that can't be
-            # encoded in ascii (128)
+            # encoded in ascii-128
             tw_name = user_obj.name
-        try:
-            tw_sn   = mdb.escape_string(user_obj.screen_name)
-        except:
-            tw_sn   = user_obj.screen_name
 
-        cinsert = "INSERT INTO {0}(user_tw_id, user_tw_name, user_tw_sn, \
-            user_followees_count)".format(tbl_name)
-        inp_row = "VALUES('%s','%s','%s','%s')"%(uid, tw_name, tw_sn, ufc)
-        execute_mdb = cinsert + inp_row + ';'
+        # follow the same procedure for twitter screen names
         try:
-            cursor.execute( execute_mdb.encode("utf8") )
+            tw_sn = mdb.escape_string(user_obj.screen_name)
         except:
-            # jpp, flag: throwing away users with extraordinarily 
-            #            crazy names... copyright symbols, TMs, etc...
-            #            try something more sophistocated later
+            tw_sn = user_obj.screen_name
+
+        cinsert = "INSERT INTO {0}(user_tw_id, user_tw_name, \
+            user_tw_sn, user_followees_count)".format(tbl_name)
+        inp_row = "VALUES('%s','%s','%s','%s')" % (uid, tw_name,
+                                                   tw_sn, ufc)
+        execute_mdb = cinsert + inp_row + ';'
+
+        # TODO: make text handling more general.
+        # Found that occasionally the database would not accept
+        # a very small number of the twitter profiles I tried to
+        # store. Not a problem at current scale, but could be
+        # as we scale up to more users.
+        # Temporary: using try/except clause to avoid error.
+        try:
+            cursor.execute(execute_mdb.encode("utf8"))
+        except:
+            # TODO: currently throwing away users with extraordinarily
+            #       crazy names... copyright symbols, TMs, etc...
+            #       try something more sophistocated later
             continue
 
     db.commit()
 
 
-def create_artist_table(db_select, root_artist):
+def create_friends_table(db_select, root_artist):
     '''
-    Make a new table in the hiphopper database
-    '''
+    If a "friends" table for the given root_artist does not
+    yet exist in the hiphopper database, then create it.
 
+    What we're storing:
+    ```````````````````
+    - for each twitter follower of the root_artist, store all of
+      the twitter users these individuals follow.
+    - in next step (not in this table), we'll ID the musicians
+      out of all the twitter users this set of people follow.
+    '''
+    # open the connection to the local database
     db = mdb.connect('localhost', 'root', '')
     cursor = db.cursor()
     cursor.execute('USE {0}'.format(db_select.strip()))
-    
-    # the artist table, specific for chosen root artist 
-    table_name = art_tbl_name.strip() + "_" + root_artist.strip()
 
-    #++++++++++++++++++++++++++++++++++++++++++++
-    # CONSIDER adding is_user_artist to columns
-    #   facilitate weighting of rec's later (jpp, flag)
-    #++++++++++++++++++++++++++++++++++++++++++++
-
-    # create the table in MySQL
-    cursor.execute("CREATE TABLE {0} (\
-        pkid int NOT NULL auto_increment, \
-        user_id int(20) NOT NULL, \
-        artist_name char(150) CHARACTER SET utf8 NOT NULL, \
-        artist_tw_sn char(150) CHARACTER SET utf8 NOT NULL, \
-        twitter_counts int(20) NOT NULL, \
-        genre char(150) CHARACTER SET utf8 NULL, \
-        ecnest_hot decimal(5,2) NULL, \
-        ecnest_familiar decimal(5,2) NULL, \
-        PRIMARY KEY (pkid)) ENGINE=InnoDB;".format(table_name))
-
-    db.commit()
-
-
-def populate_artist_table(user_id, artist_name, artist_id,
-    genre, ecnest_hot, ecnest_familiar, in_db, root_artist):
-
-    db = mdb.connect('localhost', 'root', '',
-        charset='utf8', use_unicode=True)
-
-    cursor = db.cursor()
-    cursor.execute('USE {0}'.format(in_db))
-    
-    # the table we're going to add rows to
-    table_name = art_tbl_name.strip() + "_" + root_artist.strip()
-
-    n_users = len(user_id)
-    for i in range(n_users):
-        cinsert = "INSERT INTO {0}(user_id, artist_name, \
-            artist_tw_sn, twitter_counts, genre, ecnest_hot, \
-            ecnest_familiar)".format(table_name)
-        inp_row = "VALUES('%s','%s','%s','%s','%s','%s','%s')"%(
-            user_id[i], artist_name[i], artist_id[i], twt_counts[i],
-            genre[i], ecnest_hot[i], ecnest_familiar[i])
-        execute_mdb = cinsert + inp_row + ';'
-        cursor.execute(execute_mdb.encode("utf8"))
-
-    db.commit()
-
-def create_friends_table(db_select, root_artist):
-    '''
-    Make a new table in the hiphopper database 
-    '''
-    db = mdb.connect('localhost','root','')
-    cursor = db.cursor()
-    cursor.execute('USE {0}'.format(db_select.strip()))
-
-    # the artist table, specific for chosen root artist 
+    # the friends table name, specific for chosen root artist
     table_name = frnds_tbl_name.strip() + "_" + root_artist.strip()
 
     # create the table in MySQL
@@ -194,20 +187,33 @@ def create_friends_table(db_select, root_artist):
 
 
 def populate_friends_table(user_id, user_tw_name, user_tw_sn,
-    frnd_list, in_db, root_artist):
+                           frnd_list, in_db, root_artist):
+    '''
+    Populate the "friends" table for the given root_artist
 
+    What we're storing:
+    ```````````````````
+    - for each twitter follower of the root_artist, store all of
+      the twitter users these individuals follow.
+    - in next step (not in this table), we'll ID the musicians
+      out of all the twitter users this set of people follow.
+    '''
+    # open a connection to the local MySQL database
     db = mdb.connect('localhost', 'root', '')
     cursor = db.cursor()
+    # use the hiphopper schema
     cursor.execute('USE {0}'.format(in_db))
 
-    # the table we're going to add rows to
+    # Name of the table we want to populate
     table_name = frnds_tbl_name.strip() + "_" + root_artist.strip()
 
-    # Loop over all friends of the current user
+    # Loop over all friends of the current user (i.e.
+    # twitter users that this person follows)
     for frnd in frnd_list:
 
         # load input into dummy variables
-        # escape the strings
+        # escape the strings if possible to
+        # avoid feeding bad characters to MySQL
         try:
             uname = mdb.escape_string(user_tw_name)
         except:
@@ -225,36 +231,48 @@ def populate_friends_table(user_id, user_tw_name, user_tw_sn,
         except:
             fsn = frnd.screen_name
 
-
-        print 'in friends into mysql: ', user_id, uname, usn, frnd.id, fname, fsn, frnd.followers_count, frnd.friends_count, frnd.profile_image_url
-
+        # TODO: make text handling more general.
+        # Found that occasionally the database would not accept
+        # a very small number of the twitter profiles I tried to
+        # store. Not a problem at current scale, but could be
+        # as we scale up to more users.
+        # Temporary: using try/except clause to avoid error.
         try:
 
             # Load my MySQL commands into strings before executing
-            cinsert = "INSERT INTO {0}(user_id, user_tw_name, user_tw_sn, friend_id, \
-                friend_tw_name, friend_tw_sn, friend_follow_count, friend_friend_count)".format(table_name)
+            cinsert = "INSERT INTO {0}(user_id, user_tw_name, \
+                user_tw_sn, friend_id, friend_tw_name, \
+                friend_tw_sn, friend_follow_count, \
+                friend_friend_count)".format(table_name)
 
-            inp_row = "VALUES('%s','%s','%s','%s','%s','%s','%s','%s')"%(user_id, uname, usn,
-                frnd.id, fname, fsn, frnd.followers_count, frnd.friends_count)
+            inp_row = "VALUES('%s','%s','%s','%s','%s','%s','%s','%s')" % (user_id,
+                uname, usn,frnd.id, fname, fsn,
+                frnd.followers_count, frnd.friends_count)
 
             # Now execute MySQL command for adding a new row
             execute_mdb = cinsert + inp_row + ';'
             cursor.execute(execute_mdb.encode("utf8"))
 
         except:
-            try:# try again without the url
-                # make sure it's not the url we're storing for twitter
-                # profile pictures
-                cinsert = "INSERT INTO {0}(user_id, user_tw_name, user_tw_sn, \
-                    friend_id, friend_tw_name, friend_tw_sn, \
-                    friend_follow_count, \
+            try:  # try again without the url
+                  # make sure it's not the url we're storing for twitter
+                  # profile pictures
+                cinsert = "INSERT INTO {0}(user_id, user_tw_name, \
+                    user_tw_sn, friend_id, friend_tw_name, \
+                    friend_tw_sn, friend_follow_count, \
                     friend_friend_count)".format(table_name)
 
                 inp_row = "VALUES('%s','%s','%s','%s','%s',\
-                    '%s','%s','%s')"%(user_id, uname, usn,
-                    frnd.id, fname, fsn, frnd.followers_count, frnd.friends_count)
+                    '%s','%s','%s')" % (user_id, uname, usn,
+                                        frnd.id, fname, fsn,
+                                        frnd.followers_count,
+                                        frnd.friends_count
+                                        )
 
+                # Make the full MySQL command one string
                 execute_mdb = cinsert + inp_row + ';'
+
+                # now execute the command in MySQL
                 cursor.execute(execute_mdb.encode("utf8"))
             except:
                 # jpp, flag: throwing away users with extraordinarily
@@ -265,116 +283,26 @@ def populate_friends_table(user_id, user_tw_name, user_tw_sn,
     # save the changes
     db.commit()
 
-
-def create_test_table(db_select, root_artist):
-    '''
-    Make a new table in the hiphopper database 
-    '''
-    db = mdb.connect('localhost','root','')
-    cursor = db.cursor()
-    cursor.execute('USE {0}'.format(db_select.strip()))
-
-    # the artist table, specific for chosen root artist 
-    table_name = "test_" + root_artist.strip()
-
-    # create the table in MySQL
-    cursor.execute("CREATE TABLE {0} (\
-        pkid int NOT NULL auto_increment, \
-        user_id int(20) NOT NULL, \
-        user_tw_name char(150) CHARACTER SET utf8 NULL, \
-        user_tw_sn char(150) CHARACTER SET utf8 NOT NULL, \
-        friend_id int(20) NOT NULL, \
-        friend_tw_name char(150) CHARACTER SET utf8 NULL, \
-        friend_tw_sn char(150) CHARACTER SET utf8 NOT NULL, \
-        friend_follow_count int(20) NULL, \
-        friend_friend_count int(20) NULL, \
-        friend_image_url char(255) CHARACTER SET utf8 NULL, \
-        PRIMARY KEY (pkid)) ENGINE=InnoDB;".format(table_name))
-
-    db.commit()
-
-
-def populate_test_table(user_id, user_tw_name, user_tw_sn,
-    frnd_list, in_db, root_artist):
-
-    db = mdb.connect('localhost', 'root', '')
-    cursor = db.cursor()
-    cursor.execute('USE {0}'.format(in_db))
-
-    # the table we're going to add rows to
-    table_name = "test_" + root_artist.strip()
-
-    # Loop over all friends of the current user
-    for frnd in frnd_list:
-
-        # load input into dummy variables
-        # escape the strings
-        try:
-            uname = mdb.escape_string(user_tw_name)
-        except:
-            uname = user_tw_name
-        try:
-            usn = mdb.escape_string(user_tw_sn)
-        except:
-            usn = user_tw_sn
-        try:
-            fname = mdb.escape_string(frnd.name)
-        except:
-            fname = frnd.name
-        try:
-            fsn = mdb.escape_string(frnd.screen_name)
-        except:
-            fsn = frnd.screen_name
-
-
-        print 'in friends into mysql: ', user_id, uname, usn, frnd.id, fname, fsn, frnd.followers_count, frnd.friends_count, frnd.profile_image_url
-
-        try:
-
-            # Load my MySQL commands into strings before executing
-            cinsert = "INSERT INTO {0}(user_id, user_tw_name, user_tw_sn, friend_id, \
-                friend_tw_name, friend_tw_sn, friend_follow_count, friend_friend_count)".format(table_name)
-
-            inp_row = "VALUES('%s','%s','%s','%s','%s','%s','%s','%s')"%(user_id, uname, usn,
-                frnd.id, fname, fsn, frnd.followers_count, frnd.friends_count)
-
-            # Now execute MySQL command for adding a new row
-            execute_mdb = cinsert + inp_row + ';'
-            cursor.execute(execute_mdb.encode("utf8"))
-
-        except:
-            try:# try again without the url
-                # make sure it's not the url we're storing for twitter
-                # profile pictures
-                cinsert = "INSERT INTO {0}(user_id, user_tw_name, user_tw_sn, \
-                    friend_id, friend_tw_name, friend_tw_sn, \
-                    friend_follow_count, \
-                    friend_friend_count)".format(table_name)
-
-                inp_row = "VALUES('%s','%s','%s','%s','%s',\
-                    '%s','%s','%s')"%(user_id, uname, usn,
-                    frnd.id, fname, fsn, frnd.followers_count, frnd.friends_count)
-
-                execute_mdb = cinsert + inp_row + ';'
-                cursor.execute(execute_mdb.encode("utf8"))
-            except:
-                # jpp, flag: throwing away users with extraordinarily
-                #            crazy names... copyright symbols, TMs, etc...
-                #            try something more sophistocated later
-                continue
-
-    # save the changes
-    db.commit()
 
 def create_artist_votes_table(db_select, root_artist):
     '''
-    Make a new table in the hiphopper database 
+    If a "artist_votes" table for the given root_artist does not
+    yet exist in the hiphopper database, then create it.
+
+    What we're storing:
+    ```````````````````
+    - for each twitter follower of the root_artist, store all of
+      the twitter users these individuals follow that have been
+      identified as musicians.
+    - This database is what is used by the HipHopper application
+      to generate recommendations.
     '''
+    # open connection to the local MySQL database
     db = mdb.connect('localhost','root','')
     cursor = db.cursor()
     cursor.execute('USE {0}'.format(db_select.strip()))
 
-    # the artist table, specific for chosen root artist 
+    # the artist table name, specific for chosen root artist
     table_name = "artist_votes_" + root_artist.strip()
 
     # create the table in MySQL
@@ -394,18 +322,32 @@ def create_artist_votes_table(db_select, root_artist):
 
 
 def populate_artist_votes_table(user_id, user_tw_name,
-    artist_id, artist_name, artist_sn, artist_genre,
-    artist_familiarity, artist_hotness, in_db, root_artist):
+                                artist_id, artist_name,
+                                artist_sn, artist_genre,
+                                artist_familiarity,
+                                artist_hotness, in_db,
+                                root_artist):
+    '''
+    Populate the "artist_votes" table for the given root_artist.
 
+    What we're storing:
+    ```````````````````
+    - for each twitter follower of the root_artist, store all of
+      the twitter users these individuals follow that have been
+      identified as musicians.
+    - This database is what is used by the HipHopper application
+      to generate recommendations.
+    '''
     db = mdb.connect('localhost', 'root', '')
     cursor = db.cursor()
     cursor.execute('USE {0}'.format(in_db))
 
-    # the table we're going to add rows to
+    # Name of the table we're going to populate
     table_name = "artist_votes_" + root_artist.strip()
 
     # load input into dummy variables
-    # escape the strings
+    # escape the strings if possible to
+    # avoid feeding bad characters to MySQL
     try:
         uname = mdb.escape_string(user_tw_name)
     except:
@@ -423,10 +365,12 @@ def populate_artist_votes_table(user_id, user_tw_name,
     except:
         art_genre = artist_genre
 
-    print ( 'in friends into mysql: ', user_id, uname, artist_id,
-        art_name, art_sn, art_genre,
-        artist_hotness, artist_familiarity )
-
+    # TODO: make text handling more general.
+    # Found that occasionally the database would not accept
+    # a very small number of the twitter profiles I tried to
+    # store. Not a problem at current scale, but could be
+    # as we scale up to more users.
+    # Temporary: using try/except clause to avoid error.
     try:
         # Load my MySQL commands into strings before executing
         cinsert = "INSERT INTO {0}(user_id, user_tw_name, artist_id, \
