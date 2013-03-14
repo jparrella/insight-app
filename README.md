@@ -1,4 +1,5 @@
 Description of the files saved for my insight app, HipHopper.
+
 1. cluster_artists.py:
    This is the main python code for generating artist recommendations for users steps are as follows:
    i. User supplies the root artist to begin with (conditions the twitter followers we focus on), and any additional artists that the user didn't want.
@@ -14,6 +15,9 @@ Description of the files saved for my insight app, HipHopper.
          - Currently this is a constant weighting, only applied once. Can add more detail with more data.
        - Calculate the distance between the root artist and each individual artist in the graph.
        - Serve up the top 4 closest artists.
+
+
 2. jpp_insight_app.py: This is the module that serves up results from cluster_artists to the web browser with Flask. See the comments for details on each method.
+
 3. mysql_tools.py: The set of mysql routines that I used to create and save tables of data from calls to the EchoNest and Twitter APIs. Twitter for the main data, EchoNest to evaluate musicians.
 
